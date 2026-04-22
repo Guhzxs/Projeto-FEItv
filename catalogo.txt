@@ -1,0 +1,17 @@
+Filme|Invocacao do Mal|Terror|16|1|1|Ed e Lorraine Warren enfrentam uma das entidades mais demoniacas de suas carreiras ao ajudar uma familia em uma fazenda isolada.
+Filme|A Freira|Terror|14|1|1|Uma forca malevola em forma de freira aterroriza um convento na Romenia, revelando um segredo profano que ameaca o mundo dos vivos.
+Filme|Carros|Animacao|Livre|1|1|O ambicioso Relampago McQueen descobre que a vida e sobre a jornada, nao apenas a linha de chegada, ao se perder na Rota 66.
+Filme|O Diabo Veste Prada|Comedia|Livre|1|1|Uma jovem aspirante a jornalista sobrevive ao caotico e glamouroso mundo da moda sob o comando da implacavel Miranda Priestly.
+Filme|As Branquelas|Comedia|12|1|1|Dois agentes do FBI atrapalhados se passam por herdeiras milionarias em uma missao secreta hilaria para salvar seus empregos.
+Filme|Vingadores Ultimato|Acao|12|1|1|Apos a derrota devastadora contra Thanos, os herois mais poderosos da Terra precisam viajar pelo tempo para restaurar a ordem no universo.
+Filme|Superman|Acao|Livre|1|1|Vindo de Krypton, Clark Kent abraca seu destino como o protetor da humanidade, combatendo o mal enquanto esconde sua identidade secreta.
+Filme|Guerreiras do K-pop|Documentario|12|1|1|Um olhar profundo sobre os sacrificios e a determinacao de jovens mulheres que enfrentam anos de treinamento rigoroso pelo sonho do K-pop.
+Filme|Auto da Compadecida|Comedia|12|1|1|Os malandros Joao Grilo e Chico usam a esperteza para sobreviver no sertao, enfrentando desde cangaceiros ate o julgamento final.
+Serie|Stranger Things|Ficcao|16|4|34|Quando um garoto desaparece, uma pequena cidade descobre experimentos secretos, forcas sobrenaturais e uma menina com poderes estranhos.
+Serie|Round 6|Suspense|18|1|9|Centenas de jogadores falidos aceitam um convite para competicoes infantis mortais em troca de um premio que pode mudar (ou tirar) suas vidas.
+Serie|La Casa de Papel|Acao|16|5|41|Oito ladroes fazem refens na Casa da Moeda da Espanha, enquanto um genio do crime manipula a policia para realizar o maior roubo da historia.
+Serie|Wandinha|Fantasia|12|1|8|Wandinha Addams investiga uma onda de assassinatos sobrenaturais enquanto tenta se adaptar a sua nova escola para excluidos.
+Serie|The Crown|Drama|14|6|60|Os dramas politicos, romances e as crises que definiram o reinado da Rainha Elizabeth II e moldaram o seculo XX na Gra-Bretanha.
+Serie|Black Mirror|Ficcao|18|6|27|Uma antologia que mergulha na inquietude coletiva do mundo moderno, explorando como a tecnologia pode corromper os instintos humanos.
+Anime|Naruto|Acao|12|9|220|Um orfao rejeitado por sua vila luta para superar seus limites e provar a todos que pode se tornar o maior lider ninja de sua historia.
+Anime|Shaman King|Acao|12|1|52|Yoh Asakura entra no torneio global de xamas para se conectar com o Grande Espirito e impedir que um mal antigo destrua a civilizacao.
