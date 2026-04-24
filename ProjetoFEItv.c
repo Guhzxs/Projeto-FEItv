@@ -3,8 +3,9 @@
 #include <string.h>
 #include <locale.h>
 
-
-
+//int c;
+//void limpar(while (c == '\n' && c == EOF)); End of File
+// return;
 void m_principal(char apelido[50]); // protótipo da função para não gerar erro de compilação
 
 void desenhar_linha(int tamanho){
@@ -20,7 +21,7 @@ void cadastro(){
 	FILE *arquivo;
 	
 	int opcao_voltar;
-	char nome[50], email[150], senha[10], apelido[50], sim[10];
+	char nome[51], email[151], senha[11], apelido[51], sim[11];
 	
 	arquivo = fopen("usuarios.txt", "a");
 	
@@ -42,20 +43,25 @@ void cadastro(){
 	fflush(stdin); //Limpeza do teclado do enter digitado no menu 
 	
 	printf("Digite seu nome: ");
-	fgets(nome, 50, stdin);
+	fgets(nome, 51, stdin);
 	nome[strcspn(nome, "\n")] = '\0'; // Limpa o Enter do nome
+	fflush(stdin); //Joga fora qualquer letra extra que passar de 50
 	
 	printf("Digite um e-mail valido: (ex: seunome@gmail.com): ");
-	fgets(email, 150, stdin);
-	email[strcspn(email, "\n")] = '\0'; // Limpa o Enter do email
+	fgets(email, 151, stdin);
+	email[strcspn(email, "\n")] = '\0'; //Limpa o Enter do email
+	fflush(stdin);//Joga fora qualquer coisa que passar de 150
 	
 	printf("Digite uma senha (ate 10 digitos): ");
-	fgets(senha, 10, stdin);
-	senha[strcspn(senha, "\n")] = '\0'; // Limpa o Enter da senha 
+	fgets(senha, 11, stdin);
+	senha[strcspn(senha, "\n")] = '\0'; //Limpa o Enter da senha
+	fflush(stdin); //Joga fora qualquer coisa que passar de 10
+	
 	
 	printf("Digite um apelido (como podemos te chamar): ");
-	fgets(apelido, 50, stdin);
-	apelido[strcspn(apelido, "\n")] = '\0'; // Limpa o Enter do apelido
+	fgets(apelido, 51, stdin);
+	apelido[strcspn(apelido, "\n")] = '\0'; //Limpa o Enter do apelido
+	fflush(stdin); //Joga fora qualquer coisa que passar de 50
 	
 	fprintf(arquivo, "%s|%s|%s|%s\n", nome, email, senha, apelido); //utilizando um pipe para o programa separar as informações com um pipe ("|")
 	
@@ -69,8 +75,8 @@ void cadastro(){
 
 void login(){
 	FILE *arquivo; 
-	char login_email[150], login_senha[10];
-	char nome_txt[50], email_txt[150], senha_txt[10], apelido_txt[50];
+	char login_email[151], login_senha[11];
+	char nome_txt[51], email_txt[151], senha_txt[11], apelido_txt[51];
 	int opcao_voltar2, logado = 0; //variável para verificar se deu certo
 	
 	arquivo = fopen("usuarios.txt", "r"); //abrindo o aquivo como leitura para verificar se há cadastro
@@ -167,6 +173,22 @@ void mostrar_catalogo(){
 	fclose(arquivo_catalogo);
 }
 
+//void buscar_informacoes(){
+	//FILE *arquivo_catalogo
+	
+	//char tipo[20], titulo[100], genero[50], classificacao[10], temps[10], eps[10], sinopse[600];
+	//char filme[101];
+	//int encontrou = 0;
+	
+	//arquivo_catalogo = fopen("catalogo.txt", "r");
+	
+	//printf("Digite qual filme deseja descobrir mais informaçoes: ");
+	//fgets(filme, 101, stdin);
+	//filme[strcspn(filme, "\n")] = '\0'; // Limpa o enter do filme
+	//fflush(stdin); //Joga fora tudo o que passar de 100
+	
+//}
+
 void m_principal(char apelido[50]){
 	int principal;
 	
@@ -186,7 +208,7 @@ void m_principal(char apelido[50]){
 		}
 		
 		else if(principal == 2){
-			//buscar_informações();
+			//buscar_informacoes();
 		}
 	} 
 	while(principal != 4);
