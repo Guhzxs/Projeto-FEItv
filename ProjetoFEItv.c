@@ -57,7 +57,7 @@ void cadastro(){
 	fgets(apelido, 50, stdin);
 	apelido[strcspn(apelido, "\n")] = '\0'; // Limpa o Enter do apelido
 	
-	fprintf(arquivo, "%s|%s|%s|%s|\n", nome, email, senha, apelido); //utilizando um pipe para o programa separar as informações com um pipe ("|")
+	fprintf(arquivo, "%s|%s|%s|%s\n", nome, email, senha, apelido); //utilizando um pipe para o programa separar as informações com um pipe ("|")
 	
 	fclose(arquivo);
 	
