@@ -3,9 +3,7 @@
 #include <string.h>
 #include <locale.h>
 
-//int c;
-//void limpar(while (c == '\n' && c == EOF)); End of File
-// return;
+
 void m_principal(char apelido[50]); // protótipo da função para não gerar erro de compilação
 
 void desenhar_linha(int tamanho){
@@ -158,6 +156,7 @@ void mostrar_catalogo(){
 		return;
 	}
 	
+	system("cls");
 	desenhar_linha(30);
 	printf("\n     --- CATALOGO FEItv ---\n");
 	desenhar_linha(30);
@@ -170,24 +169,80 @@ void mostrar_catalogo(){
 		printf("[%s] | %s\n", tipo, titulo);
 	}
 	desenhar_linha(30);
+	printf("\nPressione ENTER para voltar ao menu... ");
+	
+	fflush(stdin);
+	getchar();
+	
 	fclose(arquivo_catalogo);
 }
 
-//void buscar_informacoes(){
-	//FILE *arquivo_catalogo
+void buscar_informacoes(){
+	FILE *arquivo_catalogo;
 	
-	//char tipo[20], titulo[100], genero[50], classificacao[10], temps[10], eps[10], sinopse[600];
-	//char filme[101];
-	//int encontrou = 0;
+	char tipo[20], titulo[100], genero[50], classificacao[10], temps[10], eps[10], sinopse[600];
+	char filme[101];
+	int encontrou = 0, i = 0, contador = 0;
 	
-	//arquivo_catalogo = fopen("catalogo.txt", "r");
+	arquivo_catalogo = fopen("catalogo.txt", "r");
 	
-	//printf("Digite qual filme deseja descobrir mais informaçoes: ");
-	//fgets(filme, 101, stdin);
-	//filme[strcspn(filme, "\n")] = '\0'; // Limpa o enter do filme
-	//fflush(stdin); //Joga fora tudo o que passar de 100
+	fflush(stdin);
 	
-//}
+	printf("\nDigite qual filme deseja descobrir mais informaçoes: ");
+	fgets(filme, 101, stdin);
+	filme[strcspn(filme, "\n")] = '\0'; // Limpa o enter do filme
+	fflush(stdin); //Joga fora tudo o que passar de 100
+
+	
+	
+	while(fscanf(arquivo_catalogo, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|\n]\n", tipo, titulo, genero, classificacao, temps, eps, sinopse) == 7){
+		if(strcmp(titulo, filme) == 0){
+			encontrou = 1;
+			system("cls");
+			
+			desenhar_linha(60);
+			printf("\n                  --- DETALHES DA OBRA ---\n");
+			desenhar_linha(60);
+			printf("\nTitulo: %s\n", titulo);
+			printf("Tipo: %s\n", tipo);
+			printf("Genero: %s\n", genero);
+			printf("Classificacao: %s anos\n", classificacao);
+			
+			if(stricmp(tipo, "Serie") == 0){      //so imprime no terminal temporada e episodios se for série 
+				printf("Temporada(s): %s\n", temps);
+				printf("Episodios: %s\n", eps);
+			}
+			
+			
+			printf("Sinopse: ");  //sinopse com sistema de quebra de linha para experiência do usuáro
+			
+			while(sinopse[i] != '\0'){
+				if(contador >= 45 && sinopse[i] == ' '){
+					printf("\n");
+					contador = 0;
+				} else {
+					printf("%c", sinopse[i]);
+					contador++;
+				}
+				i++;
+			}
+			printf("\n");
+			
+			desenhar_linha(60);
+			
+			
+			printf("\nAperte ENTER para voltar ao menu...");
+			getchar(); // Segura a tela ate o usuario apertar Enter
+			break; // ja achou o filme não precisa mais percorrer o arquivo 
+		}
+	}
+	
+	if (encontrou == 0){
+		printf("Desculpe não encontramos '%s' no nosso catalogo.\n", filme);
+	}
+	
+	fclose(arquivo_catalogo);
+}
 
 void m_principal(char apelido[50]){
 	int principal;
@@ -208,7 +263,7 @@ void m_principal(char apelido[50]){
 		}
 		
 		else if(principal == 2){
-			//buscar_informacoes();
+			buscar_informacoes();
 		}
 	} 
 	while(principal != 4);
