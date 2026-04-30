@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+#include <ctype.h> //biblioteca para utilizar as funções de validação no cadastro
 
 
 void m_principal(char apelido[50]); // protótipo da função para não gerar erro de compilação
