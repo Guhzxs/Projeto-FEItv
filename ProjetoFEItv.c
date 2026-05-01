@@ -16,6 +16,36 @@ void desenhar_linha(int tamanho){
 	printf("\n");
 }
 
+// Retorna 1 se o nome for valido (apenas letras e espacos), ou 0 se for invalido.
+int validar_nome(char nome[]){
+	int i;
+	if(strlen(nome) < 2) return 0;  //se o nome for muito curto reprova
+	
+	for (i= 0; nome[i] != '\0'; i++){
+        // isalpha verifica se é letra, isspace verifica se é espaço
+        if (!isalpha(nome[i]) && !isspace(nome[i])){
+			return 0;
+		}
+	}
+	return 1;
+}
+
+// Retorna 1 se o e-mail tiver o formato basico correto (seunome@gmail.com)
+int validar_email(char email[]){
+	char *arroba = strchr(email, '@'); //procura o arroba
+	
+	if (arroba == NULL){
+		return 0; //são encontrou o arroba
+	}
+	char *ponto = strchr(arroba, '.'); //procura o ponto depois do arroba
+	if(ponto == NULL){
+		return 0; //não encontrou '.' depois do arroba
+	}
+	
+	return 1; //Aprovado
+}
+
+
 void cadastro(){
 	FILE *arquivo;
 	
@@ -41,15 +71,28 @@ void cadastro(){
 	
 	fflush(stdin); //Limpeza do teclado do enter digitado no menu 
 	
-	printf("Digite seu nome: ");
-	fgets(nome, 51, stdin);
-	nome[strcspn(nome, "\n")] = '\0'; // Limpa o Enter do nome
-	fflush(stdin); //Joga fora qualquer letra extra que passar de 50
+	do{
+        printf("Digite seu nome: ");
+		fgets(nome, 51, stdin);
+		nome[strcspn(nome, "\n")] = '\0'; // Limpa o Enter do nome
+		fflush(stdin); //Joga fora qualquer letra extra que passar de 50
+		
+		if(validar_nome(nome) == 0){
+			printf("\nNome invalido! Nao utilize numeros, simbolos, e digite pelo menos 2 letras.\n");
+		}
+	} while (validar_nome(nome) == 0);
 	
-	printf("Digite um e-mail valido: (ex: seunome@gmail.com): ");
-	fgets(email, 151, stdin);
-	email[strcspn(email, "\n")] = '\0'; //Limpa o Enter do email
-	fflush(stdin);//Joga fora qualquer coisa que passar de 150
+	do{
+        printf("Digite um e-mail valido: (ex: seunome@gmail.com): ");
+		fgets(email, 151, stdin);
+		email[strcspn(email, "\n")] = '\0'; //Limpa o Enter do email
+		fflush(stdin);//Joga fora qualquer coisa que passar de 150
+		
+		if(validar_email(email) == 0){
+			printf("\nE-mail invalido! Formato incorreto. 'Dica:seunome@gmail.com' \n\n");
+		}
+	} while(validar_email(email) == 0);
+	
 	
 	printf("Digite uma senha (ate 10 digitos): ");
 	fgets(senha, 11, stdin);
@@ -145,7 +188,25 @@ void m_inicial(){
 	} while (inicial != 3);
 }
 
-void mostrar_catalogo(){
+void favoritos(char apelido[], char tipo [], char titulo[]){
+	char nome_arquivo[100];
+	FILE *arquivo_fav;
+	
+	// cria o nome do arquivo personalizado (ex: gusta_favoritos)
+	sprintf(nome_arquivo, "%s_favoritos", apelido);
+	
+	arquivo_fav = fopen(nome_arquivo, "a");
+	
+	if (arquivo_fav == NULL){
+		fprintf(arquivo_fav, "%s|%s\n", tipo, titulo);
+		fclose(arquivo_fav);
+		printf("\n-> '%s' adicionado aos favoritos com Sucesso!\n", titulo);
+	} else {
+        printf("\n-> Erro ao criar o arquivo de favoritos.\n");
+	}
+}
+
+void mostrar_catalogo(char apelido[50]){
 	FILE *arquivo_catalogo;
 	
 	char tipo[20], titulo[100], genero[50], classificacao[10], temps[10], eps[10], sinopse[600];
@@ -178,7 +239,7 @@ void mostrar_catalogo(){
 	fclose(arquivo_catalogo);
 }
 
-void buscar_informacoes(){
+void buscar_informacoes(char apelido[50]){
 	FILE *arquivo_catalogo;
 	
 	char tipo[20], titulo[100], genero[50], classificacao[10], temps[10], eps[10], sinopse[600];
@@ -197,9 +258,9 @@ void buscar_informacoes(){
 	
 	
 	while(fscanf(arquivo_catalogo, "%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|\n]\n", tipo, titulo, genero, classificacao, temps, eps, sinopse) == 7){
-		if(strcmp(titulo, filme) == 0){
+		if(stricmp(titulo, filme) == 0){
 			encontrou = 1;
-			system("cls");
+			//system("cls");
 			
 			desenhar_linha(60);
 			printf("\n                  --- DETALHES DA OBRA ---\n");
@@ -231,6 +292,7 @@ void buscar_informacoes(){
 			
 			desenhar_linha(60);
 			
+			printf("Deseja adiconar '%s' aos curtidos ? ");
 			
 			printf("\nAperte ENTER para voltar ao menu...");
 			getchar(); // Segura a tela ate o usuario apertar Enter
@@ -239,7 +301,7 @@ void buscar_informacoes(){
 	}
 	
 	if (encontrou == 0){
-		printf("Desculpe não encontramos '%s' no nosso catalogo.\n", filme);
+		printf("\nDesculpe não encontramos '%s' no nosso catalogo.\n", filme);
 	}
 	
 	fclose(arquivo_catalogo);
@@ -260,11 +322,11 @@ void m_principal(char apelido[50]){
 		scanf("%d", &principal);
 		
 		if(principal == 1){
-			mostrar_catalogo();
+			mostrar_catalogo(apelido);
 		}
 		
 		else if(principal == 2){
-			buscar_informacoes();
+			buscar_informacoes(apelido);
 		}
 	} 
 	while(principal != 4);
