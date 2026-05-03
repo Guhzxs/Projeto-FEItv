@@ -16,6 +16,11 @@ void desenhar_linha(int tamanho){
 	printf("\n");
 }
 
+typedef struct {
+	char tipo [20];
+	char titulo [100];
+} Filme;
+
 // Retorna 1 se o nome for valido (apenas letras e espacos), ou 0 se for invalido.
 int validar_nome(char nome[]){
 	int i;
@@ -188,19 +193,19 @@ void m_inicial(){
 	} while (inicial != 3);
 }
 
-void favoritos(char apelido[], char tipo [], char titulo[]){
+void curtir_video(char apelido[], char tipo [], char titulo[]){
 	char nome_arquivo[100];
 	FILE *arquivo_fav;
 	
 	// cria o nome do arquivo personalizado (ex: gusta_favoritos)
-	sprintf(nome_arquivo, "%s_favoritos", apelido);
+	sprintf(nome_arquivo, "%s_curtidos.txt", apelido);
 	
 	arquivo_fav = fopen(nome_arquivo, "a");
 	
-	if (arquivo_fav == NULL){
+	if (arquivo_fav != NULL){
 		fprintf(arquivo_fav, "%s|%s\n", tipo, titulo);
 		fclose(arquivo_fav);
-		printf("\n-> '%s' adicionado aos favoritos com Sucesso!\n", titulo);
+		printf("\n-> '%s' adicionado aos curtidos com Sucesso!\n", titulo);
 	} else {
         printf("\n-> Erro ao criar o arquivo de favoritos.\n");
 	}
@@ -244,13 +249,13 @@ void buscar_informacoes(char apelido[50]){
 	
 	char tipo[20], titulo[100], genero[50], classificacao[10], temps[10], eps[10], sinopse[600];
 	char filme[101];
-	int encontrou = 0, i = 0, contador = 0;
+	int encontrou = 0, i = 0, contador = 0, curtir;
 	
 	arquivo_catalogo = fopen("catalogo.txt", "r");
 	
 	fflush(stdin);
 	
-	printf("\nDigite qual filme deseja descobrir mais informaçoes: ");
+	printf("\nDigite qual obra deseja descobrir mais informaçoes: ");
 	fgets(filme, 101, stdin);
 	filme[strcspn(filme, "\n")] = '\0'; // Limpa o enter do filme
 	fflush(stdin); //Joga fora tudo o que passar de 100
@@ -292,9 +297,17 @@ void buscar_informacoes(char apelido[50]){
 			
 			desenhar_linha(60);
 			
-			printf("Deseja adiconar '%s' aos curtidos ? ");
+			printf("\nDeseja adiconar '%s' aos curtidos?\n", titulo);
+			printf("\n[1] - Sim\n");
+			printf("[2] - Não, retornar ao menu principal\n");
+			printf("\nDigite sua opçao: ");
+			scanf("%d", &curtir);
 			
-			printf("\nAperte ENTER para voltar ao menu...");
+			if (curtir == 1){
+				curtir_video(apelido, tipo, titulo);
+			}
+			
+			printf("\nPressione ENTER para voltar ao menu...\n");
 			getchar(); // Segura a tela ate o usuario apertar Enter
 			break; // ja achou o filme não precisa mais percorrer o arquivo 
 		}
@@ -307,6 +320,90 @@ void buscar_informacoes(char apelido[50]){
 	fclose(arquivo_catalogo);
 }
 
+void listar_curtidos (char apelido[]){
+	FILE *arquivo;
+	char nome_arquivo[100];
+	
+	sprintf(nome_arquivo, "%s_curtidos.txt", apelido);
+	
+	arquivo = fopen(nome_arquivo, "r");
+	
+	if (arquivo == NULL){
+		printf("\nVoce ainda não curtiu nenhum video!\n");
+		printf("\nPressione ENTER para voltar...\n");
+		fflush(stdin);
+		getchar();
+		return;
+	}
+	
+	//magica memoria RAM(Heap)
+	Filme *lista = NULL; //vetor elastico
+	int total_filmes = 0;
+	char tipo_temp[20], titulo_temp[100];
+	
+	// le o arquivo linha por linha e estica o vetor com realloc
+	while(fscanf(arquivo, "%[^|]|%[^\n]\n", tipo_temp, titulo_temp) == 2){
+		lista = (Filme *) realloc(lista, (total_filmes + 1) * sizeof(Filme));
+		strcpy(lista[total_filmes].tipo, tipo_temp);
+		strcpy(lista[total_filmes].titulo, titulo_temp);
+		total_filmes++;
+	}
+	
+	fclose(arquivo);
+	
+	if (total_filmes == 0){
+		printf("\nSua lista de curtidas está vazia!\n");
+		free(lista); //pegando o espaço utilizao na RAM para outras funções, pois ja terminou de utilizar
+		return;
+	}
+	
+	int opcao;
+	system("cls");
+	desenhar_linha(40);
+	printf("\n        MEUS VÍDEOS CURTIDOS        \n");
+	desenhar_linha(40);
+	
+	//imprime a lista numerada
+	int i;
+	for (i = 0; i < total_filmes; i++){
+		printf("[%d] - %s (%s)\n", i + 1, lista[i].titulo, lista[i].tipo);
+	}
+	
+	desenhar_linha(40);
+	
+	printf("\n[1] - Descurtir video\n");
+	printf("[2] - Voltar ao menu principal\n");
+	printf("\nDigite sua opcao: ");
+	scanf("%d", &opcao);
+	
+	if (opcao == 1){
+		int num_remover;
+		printf("\nDigite o numero do video que deseja descurtir: ");
+		scanf("%d", &num_remover);
+		
+		if(num_remover >= 1 && num_remover <= total_filmes){   //verificando se o numero digitado é valido
+			arquivo = fopen(nome_arquivo, "w"); //apaga o conteúdo do arquivo
+			
+			//grava tudo dn exceto o filme descurtido
+			for (i = 0; i < total_filmes; i++){        
+				if(i != (num_remover - 1)){          // O -1 é porque o vetor comeca no indice 0
+				      fprintf(arquivo, "%s|%s\n", lista[i].tipo, lista[i].titulo);
+				  }
+			}
+			
+			fclose(arquivo);
+			printf("\n-> '%s', removido da lsita de curtidos!\n", lista[num_remover - 1].titulo);
+		} else{
+			printf("\n-> Numero invalido!\n");
+		}
+	} 
+	
+	free(lista);
+	fflush(stdin);
+	printf("Pressione ENTER para retornar ao menu...");
+	getchar();
+}
+
 void m_principal(char apelido[50]){
 	int principal;
 	
@@ -315,8 +412,9 @@ void m_principal(char apelido[50]){
 	
 		printf("\n[1] - Mostrar Catalogo\n");
 		printf("[2] - Buscar Informações\n");
-		printf("[3] - Acessar Favoritos\n");
-		printf("[4] - Sair do programa\n");
+		printf("[3] - Videos Curtidos\n");
+		printf("[4] - Acessar Favoritos\n");
+		printf("[5] - Sair do Programa\n");
 		
 		printf("\nDigite uma opçao: ");
 		scanf("%d", &principal);
@@ -328,8 +426,12 @@ void m_principal(char apelido[50]){
 		else if(principal == 2){
 			buscar_informacoes(apelido);
 		}
+		
+		else if(principal == 3){
+			listar_curtidos(apelido);
+		}
 	} 
-	while(principal != 4);
+	while(principal != 5);
 	
 	printf("\nSaindo da sua conta...\n");
 	printf("Retornando ao menu inicial.\n");
