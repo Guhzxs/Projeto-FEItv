@@ -122,8 +122,6 @@ void cadastro(){
 	
 	printf("\nUsuario(a), cadastrado(a) com sucesso!\n");
 	
-	printf("\nDigite sim para voltar ao menu inicial: ");
-	scanf(" %[^\n]", sim);
 }
 
 void login(){
@@ -434,7 +432,7 @@ void gerenciar_favoritos(char apelido[]){
 		
 		if(opcao == 1){
 			char nome_playlist[50], filme_buscado[100];
-			int encontrou = 0;
+			
 			
 			printf("\nDigite o nome da nova playlist: ");
 			fgets(nome_playlist, 50, stdin);
@@ -443,47 +441,53 @@ void gerenciar_favoritos(char apelido[]){
 			
 			mostrar_catalogo(apelido);
 			
-			printf("\nDigite o nome do filme/serie para adicionar a '%s': ", nome_playlist);
-			fgets(filme_buscado, 100, stdin);
-			filme_buscado[strcspn(filme_buscado, "\n")] = '\0';
-			fflush(stdin);
-			
-			//abrindo o catalogo para achar o filme 
-			FILE *arquivo_catalogo = fopen("catalogo.txt", "r");
-			
-			if (arquivo_catalogo != NULL){
-				char tipo_c[20], titulo_c[100], genero_c[50], classificacao_c[10], temps_c[10], eps_c[10], sinopse_c[600];
+			while(1){
+				int encontrou = 0;
 				
-				while(fscanf(arquivo_catalogo, " %[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]", tipo_c, titulo_c, genero_c, classificacao_c, temps_c, eps_c, sinopse_c) == 7){
+				printf("\nDigite o nome do filme/serie para adicionar a '%s': ", nome_playlist);
+				fgets(filme_buscado, 100, stdin);
+				filme_buscado[strcspn(filme_buscado, "\n")] = '\0';
+				fflush(stdin);
+				
+				//abrindo o catalogo para achar o filme 
+				FILE *arquivo_catalogo = fopen("catalogo.txt", "r");
+				
+				if (arquivo_catalogo != NULL){
+					char tipo_c[20], titulo_c[100], genero_c[50], classificacao_c[10], temps_c[10], eps_c[10], sinopse_c[600];
 					
-					//se o titulo do catalogo for igual ao filme buscado 
-					if(stricmp(titulo_c, filme_buscado) == 0){
-						encontrou = 1;
-						FILE *arquivo_fav;
-						char nome_arquivo[100];
-						sprintf(nome_arquivo, "%s_favoritos.txt", apelido);
+					while(fscanf(arquivo_catalogo, " %[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]", tipo_c, titulo_c, genero_c, classificacao_c, temps_c, eps_c, sinopse_c) == 7){
 						
-						arquivo_fav = fopen(nome_arquivo, "a");
-						
-						if(arquivo_fav != NULL){
-							fprintf(arquivo_fav, "%s|%s|%s\n", nome_playlist, tipo_c, titulo_c);
+						//se o titulo do catalogo for igual ao filme buscado 
+						if(stricmp(titulo_c, filme_buscado) == 0){
+							encontrou = 1;
+							FILE *arquivo_fav;
+							char nome_arquivo[100];
+							sprintf(nome_arquivo, "%s_favoritos.txt", apelido);
 							
-							fclose(arquivo_fav);
-							printf("\n-> '%s' adicionado a playlist '%s' com sucesso!\n", titulo_c, nome_playlist);
+							arquivo_fav = fopen(nome_arquivo, "a");
+							
+							if(arquivo_fav != NULL){
+								fprintf(arquivo_fav, "%s|%s|%s\n", nome_playlist, tipo_c, titulo_c);
+								
+								fclose(arquivo_fav);
+								printf("\n-> '%s' adicionado a playlist '%s' com sucesso!\n", titulo_c, nome_playlist);
+							}
+							else {
+								printf("\n-> Erro ao salvar na playlist!\n");
+							}
+							break; //achou e salvou
 						}
-						else {
-							printf("\n-> Erro ao salvar na playlist!\n");
-						}
-						break; //achou e salvou
 					}
+					fclose(arquivo_catalogo);
 				}
-				fclose(arquivo_catalogo);
+				if (encontrou == 0){
+					printf("\nObra nao encontrada no catalogo!");
+				}
 			}
-			if (encontrou == 0){
-				printf("\nObra nao encontrada no catalogo!");
-			}
+			
 			system("pause");
 		}
+		
 		else if(opcao == 2){
 			FILE *arquivo_fav;
 			char nome_arquivo[100];
@@ -534,7 +538,7 @@ void gerenciar_favoritos(char apelido[]){
 				}
 				// Se ainda não imprimiu, mostra na tela!
 				if(ja_imprimiu == 0){
-					printf("-> %s\n", lista[i].playlist);
+					printf("\n-> %s\n", lista[i].playlist);
 				}
 			}
 			desenhar_linha(50);
@@ -546,18 +550,20 @@ void gerenciar_favoritos(char apelido[]){
 			fflush(stdin);
 			
 			if(stricmp(escolha, "voltar") != 0){
-				printf("\n--- Playlist '%s' ---\n", escolha);
+				desenhar_linha(50);
+				printf("\n  --- Playlist '%s' ---\n", escolha);
+				desenhar_linha(50);
 				int achou = 0;
 				
 				//faz uma varredura na RAM procurando os filmes que pertencem a playlist digitada 
 				for(i = 0; i < total_fav; i++){
 					if(stricmp(lista[i].playlist, escolha) == 0){
-						printf("- %s (%s)\n", lista[i].titulo, lista[i].tipo);
+						printf("\n- %s (%s)\n", lista[i].titulo, lista[i].tipo);
 						achou = 1;
 					}
 				}
 				if (achou == 0){
-					printf("Nenhum filme/serie encontrado com esse nome de playlist!\n");
+					printf("\nNenhum filme/serie encontrado com esse nome de playlist!\n");
 				}
 			}
 			free(lista); //liberando a RAM
@@ -575,7 +581,9 @@ void gerenciar_favoritos(char apelido[]){
 			fflush(stdin);
 			
 			// sub menu de edição
+			desenhar_linha(40);
 			printf("\n--- Editando '%s' ---\n", nome_playlist);
+			desenhar_linha(40);
 			printf("\n[1] - Adicionar filme/serie\n");
 			printf("[2] - Remover filme/serie\n");
 			printf("[3] - Excluir playlist inteira\n");
@@ -586,55 +594,111 @@ void gerenciar_favoritos(char apelido[]){
 			
 			if (op_editar == 1){
 				char filme_buscado[100];
-				int encontrou = 0;
+				
 				
 				mostrar_catalogo(apelido);
 				
-				printf("\nDigite o nome do filme/serie para adicionar a '%s': ", nome_playlist);
-				fgets(filme_buscado, 100, stdin);
-				filme_buscado[strcspn(filme_buscado, "\n")] = '\0';
-				fflush(stdin);
-				
-				//abrindo o catalogo para achar o filme 
-				FILE *arquivo_catalogo = fopen("catalogo.txt", "r");
-				
-				if (arquivo_catalogo != NULL){
-					char tipo_c[20], titulo_c[100], genero_c[50], classificacao_c[10], temps_c[10], eps_c[10], sinopse_c[600];
+				while(1){
+					int encontrou = 0;
 					
-					while(fscanf(arquivo_catalogo, " %[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]\n", tipo_c, titulo_c, genero_c, classificacao_c, temps_c, eps_c, sinopse_c) == 7){
+					printf("\nDigite o nome do filme/serie para adicionar a '%s': ", nome_playlist);
+					fgets(filme_buscado, 100, stdin);
+					filme_buscado[strcspn(filme_buscado, "\n")] = '\0';
+					fflush(stdin);
+					
+					//abrindo o catalogo para achar o filme 
+					FILE *arquivo_catalogo = fopen("catalogo.txt", "r");
+					
+					if (arquivo_catalogo != NULL){
+						char tipo_c[20], titulo_c[100], genero_c[50], classificacao_c[10], temps_c[10], eps_c[10], sinopse_c[600];
 						
-						//se o titulo do catalogo for igual ao filme buscado 
-						if(stricmp(titulo_c, filme_buscado) == 0){
-							encontrou = 1;
-							FILE *arquivo_fav;
-							char nome_arquivo[100];
-							sprintf(nome_arquivo, "%s_favoritos.txt", apelido);
+						while(fscanf(arquivo_catalogo, " %[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^|]|%[^\n]\n", tipo_c, titulo_c, genero_c, classificacao_c, temps_c, eps_c, sinopse_c) == 7){
 							
-							arquivo_fav = fopen(nome_arquivo, "a");
-							
-							if(arquivo_fav != NULL){
-								fprintf(arquivo_fav, "%s|%s|%s\n", nome_playlist, tipo_c, titulo_c);
+							//se o titulo do catalogo for igual ao filme buscado 
+							if(stricmp(titulo_c, filme_buscado) == 0){
+								encontrou = 1;
+								FILE *arquivo_fav;
+								char nome_arquivo[100];
+								sprintf(nome_arquivo, "%s_favoritos.txt", apelido);
 								
-								fclose(arquivo_fav);
-								printf("\n-> '%s' adicionado a playlist '%s' com sucesso!\n", titulo_c, nome_playlist);
+								arquivo_fav = fopen(nome_arquivo, "a");
+								
+								if(arquivo_fav != NULL){
+									fprintf(arquivo_fav, "%s|%s|%s\n", nome_playlist, tipo_c, titulo_c);
+									
+									fclose(arquivo_fav);
+									printf("\n-> '%s' adicionado a playlist '%s' com sucesso!\n\n", titulo_c, nome_playlist);
+								}
+								else {
+									printf("\n-> Erro ao salvar na playlist!\n");
+								}
+								break; //achou e salvou
 							}
-							else {
-								printf("\n-> Erro ao salvar na playlist!\n");
-							}
-							break; //achou e salvou
 						}
+						fclose(arquivo_catalogo);
 					}
-					fclose(arquivo_catalogo);
+					if (encontrou == 0){
+						printf("\nObra nao encontrada no catalogo!");
+					}
 				}
-				if (encontrou == 0){
-					printf("\nObra nao encontrada no catalogo!");
-				}
+				
 				system("pause");
 			}
 			else if(op_editar == 2){
 				
 			}
 			else if(op_editar == 3){
+				FILE *arquivo;
+				char nome_arquivo[100];
+				
+				sprintf(nome_arquivo, "%s_favoritos.txt", apelido);
+				
+				arquivo = fopen(nome_arquivo, "r");
+				
+				if(arquivo == NULL){
+					printf("\nVoce ainda nao criou nenhuma playlist!\n");
+					printf("\nPressione ENTER para voltar...\n");
+					fflush(stdin);
+					getchar();
+					break;
+				}
+				//magica memoria RAM(Heap)
+				Favorito *lista = NULL;
+				int total_fav = 0;
+				char play_temp[50], tipo_temp[20], titulo_temp[100];
+				
+				while(fscanf(arquivo, " %[^|]|%[^|]|%[^\n]\n", play_temp, tipo_temp, titulo_temp) == 3){
+					lista = (Favorito *) realloc(lista, (total_fav + 1)* sizeof(Favorito));
+					
+					strcpy(lista[total_fav].playlist, play_temp);
+					strcpy(lista[total_fav].tipo, tipo_temp);
+					strcpy(lista[total_fav].titulo, titulo_temp);
+					
+					total_fav++;
+					
+				}
+				fclose(arquivo);
+				
+				arquivo = fopen(nome_arquivo, "w"); //apaga o conteúdo do arquivo
+				
+				int i;
+				
+				//grava tudo dn exceto a playlist removida
+				for (i = 0; i < total_fav; i++){
+					      
+				  	if (stricmp(lista[i].playlist, nome_playlist) != 0){
+						fprintf(arquivo, "%s|%s|%s\n", lista[i].playlist, lista[i].tipo, lista[i].titulo);
+					}
+				}
+					
+					fclose(arquivo);
+					free(lista);
+					printf("\n-> Playlist '%s', excluida com sucesso!\n", nome_playlist);
+					
+					system("pause");
+					
+					break;   // Depois de excluir a playlist inteira, não faz sentido continuar no submenu de edição dela, esse break joga o usuário de volta pro menu principal de playlists
+				
 				
 			}
 		}
