@@ -1,2 +1,3 @@
-fim de semana|Filme|Invocacao do Mal
-fim de semana|Filme|Carros
+sextou|Filme|Vingadores Ultimato
+sextou|Filme|O Diabo Veste Prada
+sextou|Filme|Invocacao do Mal
