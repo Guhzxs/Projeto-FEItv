@@ -1,0 +1,7 @@
+favs|Filme|A Freira
+favs|Filme|O Diabo Veste Prada
+favs|Filme|As Branquelas
+favs|Serie|La Casa de Papel
+anime|Anime|Naruto
+anime|Anime|Shaman King
+teste|Filme|Carros
