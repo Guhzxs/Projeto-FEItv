@@ -551,7 +551,7 @@ void gerenciar_favoritos(char apelido[]){
 					fclose(arquivo_catalogo);
 				}
 				if (encontrou == 0){
-					printf("\nObra nao encontrada no catalogo!");
+					printf("\nObra nao encontrada no catalogo!\n");
 				}
 			}
 			
