@@ -39,7 +39,7 @@ typedef struct {
 	char sinopse[600];
 } Obra;
 
-//FUNÇÕES DE VALIDAÇÃO
+//função de validação 
 // Retorna 1 se o nome for valido (apenas letras e espacos), ou 0 se for invalido.
 int validar_nome(char nome[]){
 	int i;
@@ -69,7 +69,7 @@ int validar_email(char email[]){
 	return 1; //Aprovado
 }
 
-//FUNÇÕES DE AUTENTICAÇÃO
+//funções de autenticação 
 void cadastro(){
 	FILE *arquivo;
 	
@@ -201,6 +201,7 @@ void m_inicial(){
 	
 		printf("\nDigite uma opcao: ");
 		scanf("%d", &inicial);
+		getchar();
 		
 		if(inicial == 1){
 			cadastro();
@@ -219,14 +220,38 @@ void curtir_video(char apelido[], char tipo [], char titulo[]){
 	// // Geracao de arquivo personalizado baseada no nickname do usuario atual
 	sprintf(nome_arquivo, "%s_curtidos.txt", apelido);
 	
-	arquivo_fav = fopen(nome_arquivo, "a");
+	// trava de segurança
+	int ja_curtiu = 0;
+	FILE *verifica_curtidos = fopen(nome_arquivo, "r");
 	
-	if (arquivo_fav != NULL){
-		fprintf(arquivo_fav, "%s|%s\n", tipo, titulo);
-		fclose(arquivo_fav);
-		printf("\n-> '%s' adicionado aos curtidos com Sucesso!\n", titulo);
-	} else {
-        printf("\n-> Erro ao criar o arquivo de curtidos.\n");
+	if (verifica_curtidos != NULL){
+		char tipo_temp[20], titulo_temp[100];
+		
+		// varre o arquivo lendo apenas as 2 informações tipo e titulo
+		while(fscanf(verifica_curtidos, " %[^|]|%[^\n]\n", tipo_temp, titulo_temp) == 2){
+			
+			// Se o titulo do arquivo for igual ao titulo que ele quer curtir, aciona a trava!
+			if(stricmp(titulo_temp, titulo) == 0){
+				ja_curtiu = 1;
+				break;
+			}
+		}
+		fclose(verifica_curtidos);
+	}
+	
+	if (ja_curtiu == 1){
+		printf("\n-> Voce ja curtiu a obra '%s'!\n", titulo);
+	} 
+	else{
+		arquivo_fav = fopen(nome_arquivo, "a");
+		
+		if (arquivo_fav != NULL){
+			fprintf(arquivo_fav, "%s|%s\n", tipo, titulo);
+			fclose(arquivo_fav);
+			printf("\n-> '%s' adicionado aos curtidos com Sucesso!\n", titulo);
+		} else {
+	        printf("\n-> Erro ao criar o arquivo de curtidos.\n");
+		}
 	}
 }
 
