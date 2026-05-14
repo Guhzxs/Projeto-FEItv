@@ -145,7 +145,7 @@ void login(){
 	
 	arquivo = fopen("usuarios.txt", "r"); //abrindo o aquivo como leitura para verificar se há cadastro
 	if (arquivo == NULL){
-		printf("Nenhum usuario cadastrado ainda!\n");
+		printf("\nNenhum usuario cadastrado ainda!\n");
 		return;
 	}
 	
@@ -352,7 +352,7 @@ void buscar_informacoes(char apelido[50]){
 				
 				printf("\nDeseja adiconar '%s' aos curtidos?\n", item.titulo);
 				printf("\n[1] - Sim\n");
-				printf("[2] - Não, retornar ao menu principal\n");
+				printf("[2] - Não\n");
 				printf("\nDigite sua opçao: ");
 				scanf("%d", &curtir);
 				
@@ -1023,7 +1023,7 @@ void m_principal(char apelido[50]){
 	
 		printf("\n[1] - Mostrar Catalogo\n");
 		printf("[2] - Buscar Informações\n");
-		printf("[3] - Videos Curtidos\n");
+		printf("[3] - Obras Curtidas\n");
 		printf("[4] - Acessar Favoritos\n");
 		printf("[5] - Sair do Programa\n");
 		

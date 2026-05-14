@@ -1,7 +1,0 @@
-favs|Filme|A Freira
-favs|Filme|O Diabo Veste Prada
-favs|Filme|As Branquelas
-favs|Serie|La Casa de Papel
-fds|Filme|Invocacao do Mal
-fds|Filme|A Freira
-fds|Serie|Stranger Things
