@@ -5,7 +5,7 @@ Filme|O Diabo Veste Prada|Comedia|Livre|1|1|Uma jovem aspirante a jornalista sob
 Filme|As Branquelas|Comedia|12|1|1|Dois agentes do FBI atrapalhados se passam por herdeiras milionarias em uma missao secreta hilaria para salvar seus empregos.
 Filme|Vingadores Ultimato|Acao|12|1|1|Apos a derrota devastadora contra Thanos, os herois mais poderosos da Terra precisam viajar pelo tempo para restaurar a ordem no universo.
 Filme|Superman|Acao|Livre|1|1|Vindo de Krypton, Clark Kent abraca seu destino como o protetor da humanidade, combatendo o mal enquanto esconde sua identidade secreta.
-Filme|Guerreiras do K-pop|Filme|12|1|1|Um olhar profundo sobre os sacrificios e a determinacao de jovens mulheres que enfrentam anos de treinamento rigoroso pelo sonho do K-pop.
+Filme|Guerreiras do K-pop|Animação|12|1|1|Um olhar profundo sobre os sacrificios e a determinacao de jovens mulheres que enfrentam anos de treinamento rigoroso pelo sonho do K-pop.
 Filme|Auto da Compadecida|Comedia|12|1|1|Os malandros Joao Grilo e Chico usam a esperteza para sobreviver no sertao, enfrentando desde cangaceiros ate o julgamento final.
 Serie|Stranger Things|Ficcao|16|4|34|Quando um garoto desaparece, uma pequena cidade descobre experimentos secretos, forcas sobrenaturais e uma menina com poderes estranhos.
 Serie|Round 6|Suspense|18|1|9|Centenas de jogadores falidos aceitam um convite para competicoes infantis mortais em troca de um premio que pode mudar (ou tirar) suas vidas.
